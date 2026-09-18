@@ -1,0 +1,60 @@
+mode: train  # train / inference
+
+train:
+  dataset: rice_seedling  # IJRR2017 / CWFID / rice_seedling
+  scale: 4          # 2 / 4 / 8
+  channels: 64
+  transfer_design: proposal
+  switch_mode: freeze
+  switch_ema: 0.0
+
+  qa_threshold_teacher: 0.0
+  qa_threshold_assistant: 0.0
+  qa_temperature: 1.0
+  qa_floor: 0.05
+  feature_weight: 0.1
+  alpha1: 0.1                # Teacher -> Assistant learning weight
+  beta1: 0.2                 # Teacher -> Assistant expert weight, >= alpha1
+  alpha2: 0.1
+  beta2: 0.2
+
+
+  hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/resize_set/train/images      # Train HR
+  lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images      # Train LR
+  val_hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/origin_set/val/images  # val HR
+  val_lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images  # val LR
+  val2_hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/origin_set/test/images # val2 HR
+  val2_lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images # val2 LR
+
+
+
+  output_root: 'E:\LAB_all_data\result_files'
+  run_name: null
+  resume: null
+  save_every: 50
+
+  epochs: 3000
+  batch_size: 4
+  accumulation: 4
+  patch: 64
+  lr: 0.0001
+  warmup_epochs: 5
+  ramp_epochs: 10
+  kd_weight: 0.1
+  texture_weight: 1.0
+  auxiliary_weight: 0.25
+  reverse_weight: 0.1
+
+  device: auto      # auto / cuda / cuda:0 / cpu
+  workers: 0
+  seed: 42
+  no_amp: false
+  no_checkpoint: false
+  compile: false
+  deterministic: false
+
+inference:
+  checkpoint: null
+  input: 'E:\LAB_all_data\datasets\project_use\IJRR2017_DLC\resize_all\images'
+  output: 'E:\LAB_all_data\result_files\student_sr'
+  device: auto

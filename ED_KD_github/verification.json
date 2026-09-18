@@ -1,0 +1,132 @@
+{
+  "x2_forward_backward_all_modules": "passed",
+  "x4_forward_backward_all_modules": "passed",
+  "x8_forward_backward_all_modules": "passed",
+  "constant_1x1_backward": "passed",
+  "broadcast_rejection": "passed",
+  "switch_expert_and_learning": "passed",
+  "kd_target_gradient_isolation": "passed",
+  "profile": {
+    "L": {
+      "parameters": 981424,
+      "conv_MACs_LR64_x4": 6292930560
+    },
+    "M": {
+      "parameters": 526544,
+      "conv_MACs_LR64_x4": 3292741632
+    },
+    "S": {
+      "parameters": 299104,
+      "conv_MACs_LR64_x4": 1792647168
+    },
+    "T": {
+      "parameters": 185384,
+      "conv_MACs_LR64_x4": 1042599936
+    }
+  },
+  "train_validate_export_resume_load_infer": "passed",
+  "default_C64_LR64_x4_full_system_backward": "passed (CPU FP32)",
+  "limitations": [
+    "No CUDA AMP or torch.compile runtime validation",
+    "No real dataset training or quality benchmark",
+    "Resume load tested; no claim of cross-device bitwise reproducibility"
+  ],
+  "yaml_launch": "PASS: defaults, alternate CWD, synthetic training, standalone inference, duplicate/unknown/type rejection",
+  "hr_driven_pairing": "PASS: extra LR ignored without deletion; missing LR and scale mismatch rejected",
+  "epoch_metrics_and_snapshots": {
+    "status": "PASS",
+    "checks": [
+      "SSIM agrees with scikit-image Gaussian sigma1.5 population covariance within 2e-5",
+      "SSIM identity and 1x1 inputs",
+      "3-epoch synthetic run with interval 2: only epoch 2 images and checkpoints",
+      "All validation images saved for S/AT/T",
+      "5 CSV rows per epoch with finite model losses and metrics",
+      "Resume epoch 2 and replay epoch 3 without duplicated CSV rows; metrics agree within 1e-6"
+    ],
+    "default_save_every": 50
+  },
+  "three_split_best": {
+    "status": "PASS",
+    "checks": [
+      "Three non-overlapping split manifests",
+      "15 CSV rows per epoch",
+      "All train/val/val2 loss/PSNR/SSIM values finite",
+      "Best score and checkpoint epoch match maximum val2 Student PSNR",
+      "Periodic snapshots plus best images",
+      "Resume replay preserves metrics without duplicate rows",
+      "Clean default YAML and duplicate key line reporting"
+    ]
+  },
+  "explicit_split_paths": "PASS: explicit train/val/val2 roots, all split image counts match 4/1/1 for all three output models; training export load inference",
+  "shared_lr_fix": "PASS: same LR reused across train/val/val2, unique basename fallback, ambiguity rejection",
+  "paper_corrected_fusion": {
+    "status": "PASS",
+    "checks": [
+      "x2/x4/x8 [B,C,H,W] features and RGB output shapes",
+      "All model parameter gradients present and finite",
+      "FAM mask range [0,1], EGA feature shape preserved",
+      "One-epoch YAML train/evaluate/checkpoint/image saving with shared LR"
+    ],
+    "limitations": [
+      "Fusion-only corrected variant, not original hard QA/BN or SwitOKD freeze reproduction",
+      "CPU FP32 verification; no CUDA AMP or dataset quality claim"
+    ]
+  },
+  "figure_improvement": {
+    "status": "PASS CPU FP32",
+    "checks": [
+      "x2/x4/x8 finite parameter gradients",
+      "neutral and bounded EGA, multiplicative expansion",
+      "Adam parameters and steps unchanged in all freeze combinations; unfreeze updates",
+      "controller warmup and state round trip",
+      "3 epochs YAML training: 15 CSV rows per epoch, all split periodic images",
+      "checkpoint epoch 2 replay epoch 3: metric and freeze fraction agreement within 1e-6",
+      "Default C64 x4 LR64 full-system finite gradients (CPU FP32)"
+    ],
+    "limitations": [
+      "No real dataset quality benchmark",
+      "No CUDA AMP verification"
+    ],
+    "default_switch_mode": "direction; freeze is opt-in"
+  },
+  "proposal_manuscript_revision": {
+    "status": "PASS CPU FP32",
+    "profile": {
+      "total_parameters": 2448416,
+      "backbones": {
+        "L": 981424,
+        "M": 526544,
+        "S": 299104,
+        "AT": 185384,
+        "T": 185384
+      },
+      "fusion_each": 135288,
+      "default_C64_x4_LR64_backward": "PASS CPU FP32",
+      "student_conv_MACs_LR64_x4": 1042599936,
+      "MAC_scope": "Conv2d only; no activation, normalization, pooling, shuffle or bias adds"
+    },
+    "checks": [
+      "x2/x4/x8 all finite parameter gradients",
+      "channel standardization axes; constant 1x1 finite gradient",
+      "QA error ordering and nonzero floor",
+      "gate attenuation preserved through EGA",
+      "Figure top-left/bottom-right guide configuration",
+      "MAE controller warmup, expert, worse-teacher safeguard, equality",
+      "reverse KD gradient only in learning",
+      "all four freeze combinations: exact Adam parameter and moments unchanged for frozen groups",
+      "3 epoch train/val/val2 run: 15 CSV rows per epoch",
+      "all split images saved on periodic epoch; other epochs have no periodic snapshot",
+      "standalone exported Student inference",
+      "incomplete gradient accumulation group",
+      "epoch 2 checkpoint resume replays epoch 3 metrics and freeze fractions within 1e-6"
+    ],
+    "limitations": [
+      "No CUDA AMP or torch.compile validation",
+      "No real dataset PSNR/SSIM/mIoU performance benchmark",
+      "No claim of cross-device numerical reproducibility"
+    ],
+    "default_design": "proposal",
+    "default_switch_mode": "freeze",
+    "default_switch_ema": 0.0
+  }
+}
