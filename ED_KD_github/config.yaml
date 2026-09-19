@@ -19,16 +19,16 @@ train:
   beta2: 0.2
 
 
-  hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/resize_set/train/images      # Train HR
-  lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images      # Train LR
-  val_hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/origin_set/val/images  # val HR
-  val_lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images  # val LR
-  val2_hr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w/origin_set/test/images # val2 HR
-  val2_lr_root: E:/LAB_all_data/datasets/project_use/rice_s_n_w_DLC/resize_all/images # val2 LR
+  hr_root:       # Train HR
+  lr_root:       # Train LR
+  val_hr_root:   # val HR
+  val_lr_root:   # val LR
+  val2_hr_root:  # val2 HR
+  val2_lr_root:  # val2 LR
 
 
 
-  output_root: 'E:\LAB_all_data\result_files'
+  output_root: ''
   run_name: null
   resume: null
   save_every: 50
@@ -55,6 +55,6 @@ train:
 
 inference:
   checkpoint: null
-  input: 'E:\LAB_all_data\datasets\project_use\IJRR2017_DLC\resize_all\images'
-  output: 'E:\LAB_all_data\result_files\student_sr'
+  input: ''
+  output: ''
   device: auto
